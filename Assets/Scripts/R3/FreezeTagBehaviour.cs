@@ -33,7 +33,6 @@ public class FreezeTagBehaviour : MonoBehaviour
         int victim = 0;
         if (isTagger)
         {
-            
             float distance = 60f;
             for (int i = 0; i < enemies.Length; i++)
             {
@@ -45,17 +44,17 @@ public class FreezeTagBehaviour : MonoBehaviour
                     dx = enemies[i].transform.position.x - transform.position.x;
                     dz = enemies[i].transform.position.z - transform.position.z;
 
-                    //if (Mathf.Abs(dx) > 15)
-                    //{
-                    //    dx = Mathf.Sign(transform.position.x) *
-                    //         (30 - Mathf.Abs(MoveTo.position.x - transform.position.x));
-                    //}
+                    if (Mathf.Abs(dx) > 15)
+                    {
+                        dx = Mathf.Sign(transform.position.x) *
+                             (30 - Mathf.Abs(MoveTo.position.x - transform.position.x));
+                    }
                     
-                    //if (Mathf.Abs(dz) > 15)
-                    //{
-                    //    dz = Mathf.Sign(transform.position.z) *
-                    //         (30 - Mathf.Abs(MoveTo.position.z - transform.position.z));
-                    //}
+                    if (Mathf.Abs(dz) > 15)
+                    {
+                        dz = Mathf.Sign(transform.position.z) *
+                             (30 - Mathf.Abs(MoveTo.position.z - transform.position.z));
+                    }
 
                     if (Mathf.Sqrt(((dx * dx) + (dz * dz))) < distance)
                     {
@@ -74,15 +73,15 @@ public class FreezeTagBehaviour : MonoBehaviour
             dx = (MoveTo.position.x - transform.position.x);
             dz = (MoveTo.position.z - transform.position.z);
 
-            if (Mathf.Abs(dx) > 25)
+            if (Mathf.Abs(dx) > 15)
             {
-                dx = Mathf.Sign(transform.position.x) * (50 - Mathf.Abs(MoveTo.position.x - transform.position.x));
+                dx = Mathf.Sign(transform.position.x) * (30 - Mathf.Abs(MoveTo.position.x - transform.position.x));
             }
-            if(Mathf.Abs(dz) > 25)
+            if(Mathf.Abs(dz) > 15)
             {
-                dz = Mathf.Sign(transform.position.z) * (50 - Mathf.Abs(MoveTo.position.z - transform.position.z));
+                dz = Mathf.Sign(transform.position.z) * (30 - Mathf.Abs(MoveTo.position.z - transform.position.z));
             }
-            
+            Debug.DrawRay(transform.position, new Vector3(dx, 0, dz), Color.red);
             
         }
 
@@ -105,7 +104,6 @@ public class FreezeTagBehaviour : MonoBehaviour
             dz = Mathf.Sign(transform.position.z) * (30 - Mathf.Abs(MoveTo.position.z - transform.position.z));
         }
         
-        Debug.DrawRay(transform.position, new Vector3(dx, 0, dz), Color.green);
         
         if(seekFlee)
         {
@@ -148,7 +146,7 @@ public class FreezeTagBehaviour : MonoBehaviour
     {
         float fx = dodge? dx : transform.forward.x;
         float fz = dodge? dz : transform.forward.z;
-        if (Mathf.Sqrt((float) ((dx * dx) + (dz * dz))) > rsat)
+        if (Mathf.Sqrt( ((dx * dx) + (dz * dz))) > rsat)
         {
             normVelX =  fx/ Mathf.Sqrt(((fx * fx) + (fz * fz)));
             normVelZ = fz / Mathf.Sqrt(((fx * fx) + (fz * fz)));
@@ -173,7 +171,7 @@ public class FreezeTagBehaviour : MonoBehaviour
     void kinArriveII()
     {
         
-        Debug.DrawRay(transform.position, transform.forward*10);
+        //Debug.DrawRay(transform.position, transform.forward*10);
         float ang = Vector3.Angle(transform.forward, new Vector3(dx, 0, dz));
         if(ang > 0.1f)
         {
@@ -230,19 +228,19 @@ public class FreezeTagBehaviour : MonoBehaviour
     void KinFlee()
     {
         
-        if (Mathf.Sqrt((float) ((dx * dx) + (dz * dz))) > rsat)
+        if (Mathf.Sqrt( ((dx * dx) + (dz * dz))) > rsat)
         {
-            normVelX = dx / Mathf.Sqrt((float) ((dx * dx) + (dz * dz)));
-            normVelZ = dz / Mathf.Sqrt((float) ((dx * dx) + (dz * dz)));
+            normVelX = dx / Mathf.Sqrt( ((dx * dx) + (dz * dz)));
+            normVelZ = dz / Mathf.Sqrt( ((dx * dx) + (dz * dz)));
             kinSeekVelX = speed * normVelX;
             kinSeekVelZ = speed * normVelZ; 
                     
         }
         else
         {
-            normVelX = dx / Mathf.Sqrt((float) ((dx * dx) + (dz * dz)));
-            normVelZ = dz / Mathf.Sqrt((float) ((dx * dx) + (dz * dz)));
-            float tempMaxVel = Mathf.Min((float) speed, (float)(Mathf.Sqrt((float) ((dx * dx) + (dz * dz))) / t2t));
+            normVelX = dx / Mathf.Sqrt( ((dx * dx) + (dz * dz)));
+            normVelZ = dz / Mathf.Sqrt( ((dx * dx) + (dz * dz)));
+            float tempMaxVel = Mathf.Min( speed, (Mathf.Sqrt( ((dx * dx) + (dz * dz))) / t2t));
             kinSeekVelX = tempMaxVel * normVelX;
             kinSeekVelZ = tempMaxVel * normVelZ;
         }
@@ -255,7 +253,7 @@ public class FreezeTagBehaviour : MonoBehaviour
     
     void KinFleeII()
     {
-        Debug.DrawRay(transform.position, transform.forward*30);
+        //Debug.DrawRay(transform.position, transform.forward*30);
         float ang = Vector3.Angle(transform.forward, new Vector3(dx, 0, dz));
         if(ang > 0.1f)
         {
@@ -281,7 +279,7 @@ public class FreezeTagBehaviour : MonoBehaviour
         Debug.Log("unset");
         isTagger = false;
         GetComponent<Renderer>().material.color = Color.yellow;
-        speed = 1;
+        speed = 4;
     }
 
     public void assignPlayers(GameObject t, GameObject [] f)
@@ -306,6 +304,20 @@ public class FreezeTagBehaviour : MonoBehaviour
         if (isTagger)
         {
             other.collider.GetComponent<FreezeTagBehaviour>().freeze();
+
+            bool newGame = false;
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                if (enemies[i].GetComponent<FreezeTagBehaviour>().isFrozen)
+                    newGame = true;
+                else
+                {
+                    newGame = false;
+                    break;
+                }
+            }
+            if(newGame)
+                manager.GetComponent<GameManager>().ReAssign(other.collider.name);
         }
         else
         {

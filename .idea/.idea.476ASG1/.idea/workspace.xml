@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="932c99c3-9ce4-4d39-9c05-7734ce2780de" name="Changes" comment="" />
+    <list default="true" id="932c99c3-9ce4-4d39-9c05-7734ce2780de" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.476ASG1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.476ASG1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/freezeTag.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/freezeTag.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/R3/FreezeTagBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/R3/FreezeTagBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/R3/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/R3/GameManager.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,6 +58,8 @@
       <option name="presentableId" value="Default" />
       <updated>1644182924399</updated>
       <workItem from="1644182930995" duration="27000" />
+      <workItem from="1644201201499" duration="1291000" />
+      <workItem from="1644206589336" duration="2046000" />
     </task>
     <servers />
   </component>

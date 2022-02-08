@@ -39,9 +39,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ReAssign(string newTagger)
     {
+        GameObject temp;
+        for (int i = 0; i < Hiders.Length; i++)
+        {
+            if (Hiders[i].name.Equals(newTagger))
+            {
+                temp = Hiders[i];
+                Hiders[i] = Tagger;
+                Tagger = temp;
+            }
+        }
         
+        Tagger.GetComponent<FreezeTagBehaviour>().SetTagger();
+        for (int i = 0; i < Hiders.Length; i++)
+        {
+            Hiders[i].GetComponent<FreezeTagBehaviour>().SetFleer();
+        }
     }
 }
