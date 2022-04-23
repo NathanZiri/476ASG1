@@ -12,7 +12,7 @@ public class FreezeTagBehaviour : MonoBehaviour
     private float dx;
     private float dz;
     public bool isTagger = false;
-    private bool isFrozen = false;
+    public bool isFrozen = false;
     private float normVelX = 0, normVelZ = 0;
     private float kinSeekVelX = 0, kinSeekVelZ = 0;
     
@@ -28,6 +28,8 @@ public class FreezeTagBehaviour : MonoBehaviour
     private GameObject[] enemies;
     private GameObject tagger;
     
+    //same as in pt2
+    // main difference is that for taggers it finds the nearest fleer in order to know who Sto tag
     void Update()
     {
         int victim = 0;
@@ -39,7 +41,6 @@ public class FreezeTagBehaviour : MonoBehaviour
                 
                 if(!enemies[i].GetComponent<FreezeTagBehaviour>().isFrozen)
                 {
-                    Debug.Log(enemies[i].GetComponent<FreezeTagBehaviour>().isFrozen);
                     //Debug.Log(enemies[i].GetComponent<GameObject>().name);
                     dx = enemies[i].transform.position.x - transform.position.x;
                     dz = enemies[i].transform.position.z - transform.position.z;
@@ -56,7 +57,7 @@ public class FreezeTagBehaviour : MonoBehaviour
                              (30 - Mathf.Abs(MoveTo.position.z - transform.position.z));
                     }
 
-                    if (Mathf.Sqrt(((dx * dx) + (dz * dz))) < distance)
+                    if (Mathf.Abs(Mathf.Sqrt(((dx * dx) + (dz * dz))) - distance) > 0.1 && Mathf.Sqrt(((dx * dx) + (dz * dz))) < distance)
                     {
                         victim = i;
                         MoveTo = enemies[victim].transform;
@@ -90,6 +91,7 @@ public class FreezeTagBehaviour : MonoBehaviour
 
     }
     
+    //same as in pt2
     void HandleMovement()
     {
         dx = (MoveTo.position.x - transform.position.x);
@@ -141,7 +143,8 @@ public class FreezeTagBehaviour : MonoBehaviour
             }
         }
     }
-
+    
+    //same as in pt2
     void kinArrive()
     {
         float fx = dodge? dx : transform.forward.x;
@@ -168,6 +171,7 @@ public class FreezeTagBehaviour : MonoBehaviour
         transform.position = new Vector3(moveToPosx, 1, moveToPosz);
     }
     
+    //same as in pt2
     void kinArriveII()
     {
         
@@ -184,7 +188,8 @@ public class FreezeTagBehaviour : MonoBehaviour
         
         
     }
-
+    
+    //same as in pt2
     void coneArrive()
     {
         float fx = transform.forward.x;
@@ -211,6 +216,7 @@ public class FreezeTagBehaviour : MonoBehaviour
         transform.position = new Vector3(moveToPosx, 1, moveToPosz);
     }
     
+    //same as in pt2
     void coneRotate()
     {
         float ang = Vector3.Angle(transform.forward, new Vector3(dx, 0, dz));
@@ -225,6 +231,7 @@ public class FreezeTagBehaviour : MonoBehaviour
         }
     }
     
+    //same as in pt2
     void KinFlee()
     {
         
@@ -244,13 +251,20 @@ public class FreezeTagBehaviour : MonoBehaviour
             kinSeekVelX = tempMaxVel * normVelX;
             kinSeekVelZ = tempMaxVel * normVelZ;
         }
+
+        if (float.IsNaN(kinSeekVelX))
+            kinSeekVelX = 0.01f;
+        if (float.IsNaN(kinSeekVelZ))
+            kinSeekVelZ = 0.01f;
         
+        //Debug.Log(dx + ", " + dz);
         float moveToPosx = transform.position.x + (kinSeekVelX * Time.deltaTime);
         float moveToPosz = transform.position.z + (kinSeekVelZ * Time.deltaTime);
         transform.position = new Vector3(moveToPosx, 1, moveToPosz);
-        //Debug.Log(pInitX + ", " + pInitY);
+        
     }
     
+    //same as in pt2
     void KinFleeII()
     {
         //Debug.DrawRay(transform.position, transform.forward*30);
@@ -258,63 +272,67 @@ public class FreezeTagBehaviour : MonoBehaviour
         if(ang > 0.1f)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(dx, 0, dz)), 20*Time.deltaTime);
+            KinFlee();
         }
         else
         {
             KinFlee();
         }
     }
-
+    
+    //set player as a tagger
     public void SetTagger()
     {
-        Debug.Log("set");
         isTagger = true;
+        seekFlee = true;
         GetComponent<Renderer>().material.color = Color.red;
         speed = 10;
     }
-
+    
+    //set player as a non-tagger
     public void SetFleer()
     {
         seekFlee = false;
-        Debug.Log("unset");
         isTagger = false;
         GetComponent<Renderer>().material.color = Color.yellow;
-        speed = 4;
+        speed = 3;
     }
 
+    //assigns all player to know who is a tagger and who isnt
     public void assignPlayers(GameObject t, GameObject [] f)
     {
         tagger = t;
         enemies = f;
     }
 
+    //freezes the player
     public void freeze()
     {
         isFrozen = true;
         GetComponent<Renderer>().material.color = Color.cyan;
+        //GetComponent<Collider>().enabled = false;
     }
     
+    //unfreezes the player
     public void thaw()
     {
         isFrozen = false;
-        GetComponent<Renderer>().material.color = Color.yellow;
+        //GetComponent<Collider>().enabled = true;
+        if(!isTagger)
+            GetComponent<Renderer>().material.color = Color.yellow;
     }
+    //checks for tagging by all players
     private void OnCollisionEnter(Collision other)
     {
         if (isTagger)
         {
             other.collider.GetComponent<FreezeTagBehaviour>().freeze();
 
-            bool newGame = false;
+            bool newGame = true;
             for (int i = 0; i < enemies.Length; i++)
             {
-                if (enemies[i].GetComponent<FreezeTagBehaviour>().isFrozen)
-                    newGame = true;
-                else
-                {
+                if (!enemies[i].GetComponent<FreezeTagBehaviour>().isFrozen)
                     newGame = false;
-                    break;
-                }
             }
             if(newGame)
                 manager.GetComponent<GameManager>().ReAssign(other.collider.name);

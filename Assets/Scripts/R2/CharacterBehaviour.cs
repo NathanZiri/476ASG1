@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterBehaviour : MonoBehaviour
 {
+    //initializing variables
     public Transform MoveTo;
     public float speed = 1;
     private float dx;
@@ -18,8 +19,11 @@ public class CharacterBehaviour : MonoBehaviour
     double maxAccel = 12.25;
     private bool dodge = false;
     public bool seekFlee = true;
+    
+    
     void Update()
     {
+        //calculates distance to find if wrapping is best
         dx = (MoveTo.position.x - transform.position.x);
         dz = (MoveTo.position.z - transform.position.z);
 
@@ -34,19 +38,28 @@ public class CharacterBehaviour : MonoBehaviour
         
         Debug.DrawRay(transform.position, new Vector3(dx, 0, dz), Color.green);
         
+        
+        //depending on whether you are seeking or fleeing the apprpriate action is needed  
         if(seekFlee)
         {
-            if(Mathf.Sqrt((kinSeekVelX * kinSeekVelX) + (kinSeekVelZ * kinSeekVelZ)) < 0.25f)
+            if(Mathf.Sqrt((kinSeekVelX * kinSeekVelX) + (kinSeekVelZ * kinSeekVelZ)) < 0.5f  || dodge)
             {
+                //Debug.Log("here3");
+                //Debug.Log(dx + "    "  + dz + "     " + Mathf.Sqrt((dx * dx) + (dz * dz)));
+               
                 if (Mathf.Sqrt((dx * dx) + (dz * dz)) < 5)
                 {
+                    //Debug.Log("here");
                     kinArrive();
                     dodge = true;
+                   
+                    
                 }
                 else
                 {
+                    //Debug.Log("here2");
                     kinArriveII();
-                    dodge = false;
+                    dodge = false;                                  
                 }
             }
             else
@@ -71,11 +84,12 @@ public class CharacterBehaviour : MonoBehaviour
         }
     }
 
+    //kinematic arrive
     void kinArrive()
     {
         float fx = dodge? dx : transform.forward.x;
         float fz = dodge? dz : transform.forward.z;
-        if (Mathf.Sqrt((float) ((dx * dx) + (dz * dz))) > rsat)
+        if (Mathf.Sqrt( ((dx * dx) + (dz * dz))) > rsat)
         {
             normVelX =  fx/ Mathf.Sqrt(((fx * fx) + (fz * fz)));
             normVelZ = fz / Mathf.Sqrt(((fx * fx) + (fz * fz)));
@@ -97,6 +111,7 @@ public class CharacterBehaviour : MonoBehaviour
         transform.position = new Vector3(moveToPosx, 1, moveToPosz);
     }
     
+    //kinematic arrive with rotating first
     void kinArriveII()
     {
         
@@ -113,7 +128,8 @@ public class CharacterBehaviour : MonoBehaviour
         
         
     }
-
+    
+    //kinematic arrive with cone availablility
     void coneArrive()
     {
         float fx = transform.forward.x;
@@ -140,6 +156,7 @@ public class CharacterBehaviour : MonoBehaviour
         transform.position = new Vector3(moveToPosx, 1, moveToPosz);
     }
     
+    //kinematic arrive but with rotating to a fist initial distance
     void coneRotate()
     {
         float ang = Vector3.Angle(transform.forward, new Vector3(dx, 0, dz));
@@ -154,6 +171,7 @@ public class CharacterBehaviour : MonoBehaviour
         }
     }
     
+    //kinematic fee when close by
     void KinFlee()
     {
         
@@ -180,6 +198,7 @@ public class CharacterBehaviour : MonoBehaviour
         //Debug.Log(pInitX + ", " + pInitY);
     }
     
+    //kinematic fee while rotating
     void KinFleeII()
     {
         Debug.DrawRay(transform.position, transform.forward*30);
@@ -192,5 +211,11 @@ public class CharacterBehaviour : MonoBehaviour
         {
             KinFlee();
         }
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == lm)
+            dodge = false;
     }
 }

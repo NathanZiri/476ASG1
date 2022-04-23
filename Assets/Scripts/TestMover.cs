@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class TestMover : MonoBehaviour
 {
+    //moves the ball when a seeker touches it.
     public LayerMask lm;
     private void OnTriggerEnter(Collider other)
     {

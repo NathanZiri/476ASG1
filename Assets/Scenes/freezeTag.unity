@@ -378,6 +378,7 @@ MonoBehaviour:
   MoveTo: {fileID: 395649695}
   speed: 10
   isTagger: 0
+  isFrozen: 0
   lm:
     serializedVersion: 2
     m_Bits: 512
@@ -515,6 +516,7 @@ MonoBehaviour:
   MoveTo: {fileID: 395649695}
   speed: 10
   isTagger: 0
+  isFrozen: 0
   lm:
     serializedVersion: 2
     m_Bits: 512
@@ -702,7 +704,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &395649695
 Transform:
   m_ObjectHideFlags: 0
@@ -1090,6 +1092,7 @@ MonoBehaviour:
   MoveTo: {fileID: 395649695}
   speed: 10
   isTagger: 0
+  isFrozen: 0
   lm:
     serializedVersion: 2
     m_Bits: 512
@@ -2167,6 +2170,7 @@ MonoBehaviour:
   MoveTo: {fileID: 395649695}
   speed: 10
   isTagger: 0
+  isFrozen: 0
   lm:
     serializedVersion: 2
     m_Bits: 512

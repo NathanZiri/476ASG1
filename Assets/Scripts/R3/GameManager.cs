@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     public void ReAssign(string newTagger)
     {
+        
         GameObject temp;
         for (int i = 0; i < Hiders.Length; i++)
         {
@@ -50,12 +51,23 @@ public class GameManager : MonoBehaviour
                 Hiders[i] = Tagger;
                 Tagger = temp;
             }
+
+            Hiders[i].transform.position = new  Vector3(Random.Range(-14.5f, 14.5f), 1, Random.Range(-14.5f, 14.5f)) ;
         }
         
-        Tagger.GetComponent<FreezeTagBehaviour>().SetTagger();
+        Tagger.transform.position = new  Vector3(Random.Range(-14.5f, 14.5f), 1, Random.Range(-14.5f, 14.5f)) ;
+
         for (int i = 0; i < Hiders.Length; i++)
         {
             Hiders[i].GetComponent<FreezeTagBehaviour>().SetFleer();
+        }
+        
+        Tagger.GetComponent<FreezeTagBehaviour>().SetTagger();
+        
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].GetComponent<FreezeTagBehaviour>().assignPlayers(Tagger, Hiders);
+            players[i].GetComponent<FreezeTagBehaviour>().thaw();
         }
     }
 }

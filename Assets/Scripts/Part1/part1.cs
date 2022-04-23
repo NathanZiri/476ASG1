@@ -2,31 +2,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
 public class part1 : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("1a");
+        
+        //Debug.Log("1a");
         ONEa();
         reset();
-        Debug.Log("1b");
+        
+        //Debug.Log("1b");
         ONEb();
         reset();
+        
         //1c steering seek curves into the position while kinematic seems goes straight to the point 
-        Debug.Log("1d");
+        
+        //Debug.Log("1d");
         ONEd();
         reset();
-        Debug.Log("1e");
+        
+        //Debug.Log("1e");
         ONEe();
         reset();
+        
         //1f both slow down as they approach the saturation radius however steering seek curves into the position while kinematic seems goes straight to the point 
-        Debug.Log("2a");
+        
+        //Debug.Log("2a");
         TWOa();
         reset();
-        Debug.Log("2b");
+        
+        //Debug.Log("2b");
         TWOb();
+        reset();
+        
+        TWOc();
         reset();
         
     }
